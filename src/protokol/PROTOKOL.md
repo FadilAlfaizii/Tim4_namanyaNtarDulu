@@ -6,9 +6,9 @@ baru yang disetujui pembimbing.
 
 | Butir | Isi |
 |---|---|
-| Kasus (dari kartu Kasus tim) | … |
+| Kasus (dari kartu Kasus tim) | Klasifikasi persitima suara di meja |
 | Sumber dataset | … (tautan dari kartu Kasus tim) |
-| Jenis tugas (`TUGAS`) | klasifikasi / regresi |
+| Jenis tugas (`TUGAS`) | klasifikasi |
 | Target / label | … |
 | Ukuran data latih / validasi / uji | … / … / … |
 | Cara split | `split.indeks` seed 2026, porsi validasi 10 % (atau `indeks_urut` untuk deret waktu) |

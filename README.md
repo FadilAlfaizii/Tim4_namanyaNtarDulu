@@ -1,14 +1,8 @@
-# Capstone Deep Learning — starter tim
+# Capstone Deep Learning — Tim 04
 
-Template repositori tim untuk **Capstone Deep Learning: Satu Kasus, Lima Keluarga Model**
-(Program Studi Sains Data ITERA, Data Science Workbench). Satu tim = satu repositori yang
-dibuat dari template ini; setiap anggota memiliki satu keluarga model dan satu folder.
-
-**Kasus dan dataset tiap tim berbeda.** Keduanya ditetapkan tim pengajar (dosen pengampu bersama
-pembimbing) dan tercatat di kartu *Kasus tim* pada Papan Tim Workbench beserta tautan
-datasetnya. Starter ini tidak memuat dataset apa pun; yang dibakukan adalah **cara
-mengevaluasi dan melaporkan**, sehingga lima model tim dibandingkan secara adil dan hasilnya
-dapat direproduksi.
+Tim 04 mengerjakan **klasifikasi multi-label peristiwa suara di meja** untuk Capstone Deep
+Learning Program Studi Sains Data ITERA. Empat jalur model memakai rekaman meja dan protokol
+evaluasi yang sama. Setiap anggota bertanggung jawab atas satu keluarga model dan satu folder.
 
 ## Struktur
 
@@ -26,28 +20,24 @@ run_all.py         satu perintah: jalankan semua model dan rakit tabel komparasi
 
 ## Sprint 0: membekukan protokol tim
 
-Penjaga Data \& Evaluasi mengerjakan ini bersama tim, lalu meminta persetujuan pembimbing
-lewat *pull request* ke `main`:
-
-1. Unduh dataset dari tautan di kartu *Kasus tim* ke `data/` (folder ini tidak di-commit).
-   Isi `data/MANIFEST.json` dengan tautan sumber dan daftar berkas; `src.common.manifest`
-   menghitung `data_hash` dari isi berkas itu, sehingga semua anggota memakai data yang sama.
-2. Isi `src/protokol/data.py`: fungsi `muat()` mengembalikan `X_train, y_train, X_val, y_val,
-   X_test, y_test` memakai split beku dari `src.common.split` (seed 2026). Contoh lengkap
-   untuk Fashion-MNIST ada di `src/protokol/contoh_fashion_mnist.py`.
-3. Tulis `src/protokol/PROTOKOL.md`: jenis tugas (`klasifikasi` atau `regresi`), metrik utama,
-   ukuran split, anggaran komputasi, dan aturan evaluasi data uji (sekali, di sprint terakhir).
-4. Jalankan baseline untuk memastikan jalur evaluasi hidup:
+1. Letakkan salinan arsip sesi Tim 04 di `data/tim04_sesi-20261116-084442.tar.gz`. Sumber
+   dan SHA-256 ada di `data/MANIFEST.json`. Arsip lokal diabaikan Git.
+2. Gunakan `src/protokol/data.py`. Fungsi `muat()` mengembalikan `X_train, y_train, X_val,
+   y_val, X_test, y_test`. Split memakai ID ulangan dengan seed 2026.
+3. Ikuti [protokol Tim 04](src/protokol/PROTOKOL.md) untuk anotasi dengar, aturan ekstraksi,
+   urutan label, dan penilaian multi-label. Lengkapi anotasi dan verifikasi lembar sesi.
+4. Jalankan baseline MFCC + Random Forest untuk memeriksa jalur evaluasi:
 
    ```bash
    pip install -r requirements.txt
-   python -m src.common.baseline --seed 2026
+   python -m src.protokol.baseline --seed 2026
    ```
 
-   Hasilnya di `results/baseline/metrics.json`: batas bawah yang harus dilampaui setiap model.
+   Hasil validasi ada di `results/baseline/metrics.json`. Selama anotasi aksi belum lengkap,
+   cakupan label dilaporkan bersama skor.
 
-Setelah *pull request* protokol digabung, `src/protokol/` tidak diubah lagi sampai akhir;
-perubahan hanya lewat *pull request* yang disetujui pembimbing.
+5. Penjaga Data & Evaluasi meminta persetujuan pembimbing lewat *pull request* ke `main`.
+   Setelah digabung, perubahan `src/protokol/` memerlukan *pull request* yang disetujui pembimbing.
 
 ## Sprint 1 dan seterusnya: model tiap anggota
 
@@ -58,17 +48,17 @@ perubahan hanya lewat *pull request* yang disetujui pembimbing.
    python models/<nim>/run.py --seed 1 && python models/<nim>/run.py --seed 2 && python models/<nim>/run.py --seed 3
    ```
 
-   Setiap run menulis `results/<nim>/metrics.json` lewat `src.common.evaluate`; Local Runner
+   Setiap run menulis `results/<nim>/metrics.json` lewat `src.protokol.evaluate`. Local Runner
    memeriksanya (skema `metrik/seed/data_hash`, isi sama dengan HEAD) saat *Periksa artefak*
    ditekan di aplikasi DSWorkbench.
 3. Perintah reproduksi tim (dinilai pada sprint terakhir): `python run_all.py`.
 
-## Yang dibakukan untuk semua tim
+## Yang dibakukan untuk Tim 04
 
-- Split latih/validasi beku dari data latih dengan seed 2026 (`src/common/split.py`); data uji
+- Split beku per ulangan dengan seed 2026 (`src/common/split.py`). Data uji
   hanya dievaluasi **sekali** oleh Penjaga Data pada sprint terakhir (`--final`).
-- Metrik: klasifikasi → akurasi dan macro-F1; regresi → RMSE, MAE, R². Metrik utama ditulis di
-  `PROTOKOL.md`. Hasil konfigurasi akhir dilaporkan sebagai rerata ± simpangan baku dari 3 seed.
+- Metrik utama adalah F1 per kelas. Hasil konfigurasi akhir dilaporkan sebagai rerata ±
+  simpangan baku dari 3 seed.
 - Anggaran komputasi ≤ 20 menit pelatihan per run di CPU laptop (atau sesuai yang disetujui
   pembimbing untuk kasus tim); catat `--durasi` dan `--perangkat`.
 - `data_hash` dihitung dari berkas di `data/MANIFEST.json` dan split; jangan diisi manual.
@@ -79,7 +69,6 @@ perubahan hanya lewat *pull request* yang disetujui pembimbing.
 |---|---|---|
 | `cnn` | CNN (1D/2D sesuai data) | 05 |
 | `tl` | Transfer learning / fine-tuning model pralatih | 06 |
-| `rnn` | RNN → LSTM/GRU | 07–08 |
 | `trf` | Transformer encoder | 09 |
 | `ae` | Autoencoder → representasi untuk klasifikasi/regresi/anomali | — |
 

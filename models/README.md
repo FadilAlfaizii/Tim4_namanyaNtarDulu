@@ -11,14 +11,16 @@ python models/<nim>/run.py --seed 1 --final    # sprint terakhir: + prediksi dat
 
 Yang wajib dilakukan `run.py`:
 
-1. Memuat data lewat `src.common.split.muat_split()` (jangan membuat split sendiri).
+1. Memuat data lewat `src.protokol.data.muat(sertakan_uji=final)`. Split sudah ditentukan per ulangan.
 2. Menetapkan seed dari argumen `--seed` ke NumPy dan PyTorch (`torch.manual_seed`).
-3. Menulis prediksi validasi ke `results/<nim>/pred_val.npy` (array int label 0–9, panjang 6.000).
-   Dengan `--final`, juga `results/<nim>/pred_test.npy` (panjang 10.000) dari `src.common.data.muat("test")`.
-4. Memanggil penilai dosen, bukan menghitung metrik sendiri:
+3. Menulis prediksi validasi ke `results/<nim>/pred_val.npy` sebagai matriks biner `(N, 7)`
+   dengan urutan kolom `src.protokol.data.LABEL`. Dengan `--final`, tulis juga
+   `results/<nim>/pred_test.npy`. Saat menghitung loss, abaikan sel target yang bernilai `-1`.
+   Tetapkan ambang prediksi dari validasi.
+4. Memanggil penilai multi-label Tim 04:
 
    ```python
-   subprocess.run([sys.executable, "-m", "src.common.evaluate", "--nim", NIM, "--model", "cnn",
+   subprocess.run([sys.executable, "-m", "src.protokol.evaluate", "--nim", NIM, "--model", "cnn",
                    "--seed", str(seed), "--pred-val", "results/NIM/pred_val.npy",
                    "--durasi", f"{durasi:.1f}", "--perangkat", "cpu laptop"], check=True, cwd=AKAR)
    ```

@@ -1,0 +1,30 @@
+{
+  "metrik": {
+    "val_n_buka_pintu": 0,
+    "val_positif_buka_pintu": 0,
+    "val_n_tutup_pintu": 0,
+    "val_positif_tutup_pintu": 0,
+    "val_n_ketuk_meja": 0,
+    "val_positif_ketuk_meja": 0,
+    "val_n_letakkan_gelas": 0,
+    "val_positif_letakkan_gelas": 0,
+    "val_n_kipas": 209,
+    "val_positif_kipas": 104,
+    "val_f1_kipas": 0.908163,
+    "val_n_pompa": 209,
+    "val_positif_pompa": 100,
+    "val_f1_pompa": 0.862559,
+    "val_n_buzzer": 209,
+    "val_positif_buzzer": 104,
+    "val_f1_buzzer": 1.0,
+    "val_macro_f1": 0.923574,
+    "val_acc": 0.92504
+  },
+  "seed": 2026,
+  "data_hash": "4974a01ef218b520299f0a657d230eef",
+  "model": "mfcc_rf",
+  "durasi_detik": 0.598,
+  "perangkat": "cpu",
+  "n_val": 209,
+  "n_test": 0
+}

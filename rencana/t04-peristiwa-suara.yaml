@@ -1,0 +1,34 @@
+# Rencana Tim 04 dari lampiran tim-04.pdf; persetujuan diasumsikan atas arahan tim.
+tim: 4
+judul: Klasifikasi peristiwa suara di meja
+pembimbing: Ardika Satria
+pilar: Suara
+seed: 1004
+ulangan: 6
+durasi_kondisi_detik: 4
+jeda_detik: 0.5
+rekam:
+  audio:
+    aktif: true
+    sample_rate: 16000
+  kamera:
+    aktif: false
+faktor:
+  aksi:
+    jenis: isyarat
+    taraf:
+      - buka pintu kotak
+      - tutup pintu kotak
+      - ketuk meja 3 kali
+      - letakkan gelas
+      - diam
+    instruksi: 'Lakukan: {taraf}'
+  kipas: [0, 255]
+  pompa: [0, 200]
+  buzzer: [0, 1]
+metode:
+  jenis_tugas: Klasifikasi multi-label peristiwa
+  masukan_model: Log-mel 64 pita, 1 s
+  metrik_utama: F1 per kelas
+  jalur: [CNN, TL, Transformer, AE]
+  pembanding_non_dl: MFCC rata-rata dan simpangan + Random Forest/SVM

@@ -2,7 +2,7 @@
 
     python run_all.py [--seeds 1 2 3] [--final] [--hanya <nim> ...]
 
-Menjalankan baseline dosen dan ``models/<nim>/run.py`` setiap anggota untuk tiap seed, lalu
+Menjalankan baseline Tim 04 dan ``models/<nim>/run.py`` setiap anggota untuk tiap seed, lalu
 merakit ``reports/hasil_komparasi.md`` dari ``results/*/metrics.json`` (hanya seed terakhir
 yang tersimpan di metrics.json; sebaran antar-seed dicatat dari keluaran tiap run).
 """
@@ -31,7 +31,7 @@ def main() -> None:
     a = ap.parse_args()
 
     if not a.tanpa_baseline:
-        jalankan([sys.executable, "-m", "src.common.baseline_mlp", "--seed", str(a.seeds[0])])
+        jalankan([sys.executable, "-m", "src.protokol.baseline", "--seed", "2026"])
     anggota = sorted(p for p in (AKAR / "models").iterdir() if p.is_dir() and (p / "run.py").exists()
                      and p.name != "TEMPLATE" and (a.hanya is None or p.name in a.hanya))
     ringkas: dict[str, list[dict]] = {}
@@ -44,20 +44,23 @@ def main() -> None:
             hasil = json.loads((AKAR / "results" / m.name / "metrics.json").read_text("utf-8"))
             ringkas.setdefault(m.name, []).append(hasil)
 
-    baris = ["| NIM | Model | seed | val_acc | val_macro_f1 | test_acc | durasi (s) | perangkat |", "|---|---|---|---|---|---|---|---|"]
+    baris = ["| NIM | Model | seed | val_acc | val_macro_f1 | test_macro_f1 | durasi (s) | perangkat |", "|---|---|---|---|---|---|---|---|"]
     bl = AKAR / "results" / "baseline" / "metrics.json"
     if bl.exists():
         h = json.loads(bl.read_text("utf-8")); mt = h["metrik"]
-        baris.append(f"| baseline | mlp dosen | {h['seed']} | {mt['val_acc']:.4f} | {mt['val_macro_f1']:.4f} | — | {h.get('durasi_detik', 0):.0f} | {h.get('perangkat', '')} |")
+        baris.append(f"| baseline | {h['model']} | {h['seed']} | {mt['val_acc']:.4f} | {mt['val_macro_f1']:.4f} | — | {h.get('durasi_detik', 0):.1f} | {h.get('perangkat', '')} |")
     for nim, daftar in ringkas.items():
         for h in daftar:
             mt = h["metrik"]
+            uji = f"{mt['test_macro_f1']:.4f}" if "test_macro_f1" in mt else "—"
             baris.append(f"| {nim} | {h.get('model', '')} | {h['seed']} | {mt['val_acc']:.4f} | {mt['val_macro_f1']:.4f} | "
-                         f"{mt.get('test_acc', float('nan')):.4f} | {h.get('durasi_detik', 0):.0f} | {h.get('perangkat', '')} |")
+                         f"{uji} | {h.get('durasi_detik', 0):.1f} | {h.get('perangkat', '')} |")
     (AKAR / "reports").mkdir(exist_ok=True)
     out = AKAR / "reports" / "hasil_komparasi.md"
-    out.write_text("# Hasil komparasi (dibangkitkan run_all.py)\n\n" + "\n".join(baris) + "\n", encoding="utf-8")
-    print("tabel komparasi →", out.relative_to(AKAR))
+    keterangan = "Cakupan label dan F1 per kelas tercatat di `results/<nim>/metrics.json`.\n\n"
+    out.write_text("# Hasil komparasi (dibangkitkan run_all.py)\n\n" + keterangan
+                   + "\n".join(baris) + "\n", encoding="utf-8")
+    print("tabel komparasi ->", out.relative_to(AKAR))
 
 
 if __name__ == "__main__":

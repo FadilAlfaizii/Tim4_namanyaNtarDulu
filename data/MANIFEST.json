@@ -1,5 +1,13 @@
 {
-  "sumber": "https://… (tautan dataset dari kartu Kasus tim di Workbench)",
-  "berkas": ["data/latih.csv"],
-  "catatan": "Isi pada Sprint 0: versi/tanggal unduh, jumlah baris, dan perubahan (bila ada). Berkas data sendiri tidak di-commit."
+  "sumber": "Rekaman primer Meja Uji Ruang Cerdas 5 V, Tim 04, sesi-20261116-084442. Salinan arsip tim; tautan penyimpanan di Workbench belum tercatat di repo.",
+  "sesi": "sesi-20261116-084442",
+  "arsip": "data/tim04_sesi-20261116-084442.tar.gz",
+  "sha256_arsip": "77e9708869ca34778c351dda1ed4bf1d284e071707cb711477fc61f61f0a3885",
+  "sha256_label_csv": "b0230bb058b34bd9695b816236dc9488e44e5d77f78b32be7560f22efe5324b8",
+  "anotasi_aksi": "src/protokol/anotasi_aksi.json",
+  "berkas": [
+    "data/tim04_sesi-20261116-084442.tar.gz",
+    "src/protokol/anotasi_aksi.json"
+  ],
+  "catatan": "Sesi 16 November 2026, perekam 1.13, 240 kondisi, 19 WAV mono 48 kHz."
 }

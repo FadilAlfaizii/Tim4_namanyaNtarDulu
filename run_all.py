@@ -44,7 +44,7 @@ def main() -> None:
             hasil = json.loads((AKAR / "results" / m.name / "metrics.json").read_text("utf-8"))
             ringkas.setdefault(m.name, []).append(hasil)
 
-    baris = ["| NIM | Model | seed | val_acc | val_macro_f1 | test_macro_f1 | durasi (s) | perangkat |", "|---|---|---|---|---|---|---|---|"]
+    baris = ["| NIM | Model | seed | val_acc | val_macro_f1 | test_acc | durasi (s) | perangkat |", "|---|---|---|---|---|---|---|---|"]
     bl = AKAR / "results" / "baseline" / "metrics.json"
     if bl.exists():
         h = json.loads(bl.read_text("utf-8")); mt = h["metrik"]
@@ -52,7 +52,7 @@ def main() -> None:
     for nim, daftar in ringkas.items():
         for h in daftar:
             mt = h["metrik"]
-            uji = f"{mt['test_macro_f1']:.4f}" if "test_macro_f1" in mt else "—"
+            uji = f"{mt['test_acc']:.4f}" if "test_acc" in mt else "—"
             baris.append(f"| {nim} | {h.get('model', '')} | {h['seed']} | {mt['val_acc']:.4f} | {mt['val_macro_f1']:.4f} | "
                          f"{uji} | {h.get('durasi_detik', 0):.1f} | {h.get('perangkat', '')} |")
     (AKAR / "reports").mkdir(exist_ok=True)

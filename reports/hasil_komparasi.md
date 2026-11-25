@@ -1,4 +1,4 @@
-# Hasil Komparasi
+# Hasil Komparasi model Deep Learning dan Non-DL
 ---
 | NIM | Model | seed | val_acc | val_macro_f1 | test_acc | durasi (s) | perangkat |
 |---|---|---|---|---|---|---|---|
